@@ -161,6 +161,7 @@ g++ main.cpp -o server
 * Combines Python, C++, and React in one system
 * Demonstrates real-world cybersecurity concepts
 * Modular and scalable design
+* Plug and Protect Integration
 
 ---
 

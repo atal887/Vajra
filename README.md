@@ -149,9 +149,9 @@ g++ main.cpp -o server
 
 ## ⚠️ Important Notes
 
-* Large datasets, logs, and binaries are **excluded** from this repository
-* External dependencies (like OpenSSL/OpenResty) must be installed separately
-* This project is intended for **educational and demonstration purposes**
+* Large datasets, logs, and binaries are **excluded** from this repository.
+* External dependencies (like OpenSSL/OpenResty) must be installed separately.
+* This project is intended for **educational and demonstration purposes**.
 
 ---
 

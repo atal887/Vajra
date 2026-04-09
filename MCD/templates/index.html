@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DATA Forensic Hub | ClearPath</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes bounce-status {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .animate-bounce-red {
+            animation: bounce-status 0.5s infinite;
+            color: #dc2626 !important;
+            font-weight: 900;
+        }
+
+        @keyframes blink-alert {
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .animate-blink {
+            animation: blink-alert 0.8s infinite;
+        }
+
+        #forensicModal {
+            display: none;
+        }
+
+        .btn-status {
+            width: 110px;
+            text-align: center;
+        }
+
+        /* Success Toast Notification */
+        #successToast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #1e3a8a;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: 30px;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        #successToast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadein {
+            from {
+                bottom: 0;
+                opacity: 0;
+            }
+
+            to {
+                bottom: 30px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeout {
+            from {
+                bottom: 30px;
+                opacity: 1;
+            }
+
+            to {
+                bottom: 0;
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-white text-slate-900 font-sans uppercase">
+
+    <audio id="alertSound" src="/static/alert.wav" preload="auto" playsinline></audio>
+
+    <div id="successToast">DNA SECURED & REGISTRY UPDATED</div>
+
+    <div id="mainLoader" class="hidden fixed inset-0 bg-white/95 z-[1000] flex flex-col items-center justify-center">
+        <div class="w-12 h-12 border-4 border-slate-200 border-t-blue-800 rounded-full animate-spin"></div>
+        <p id="loaderText" class="mt-4 text-[10px] font-black text-blue-900 tracking-widest uppercase"></p>
+    </div>
+
+    <div id="forensicModal" class="fixed inset-0 bg-slate-900/40 z-[900] flex items-center justify-center p-4"
+        onclick="closeModal()">
+        <div class="bg-white w-full max-w-md border border-slate-300 shadow-2xl" onclick="event.stopPropagation()">
+            <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                <h3 id="modalTitle" class="text-[10px] font-black text-slate-800 tracking-widest uppercase">Forensic
+                    Analysis</h3>
+            </div>
+            <div id="modalBody" class="p-8 text-[11px] text-slate-700 space-y-3 leading-relaxed font-bold uppercase">
+            </div>
+            <div id="modalFooter" class="px-8 pb-8"></div>
+        </div>
+    </div>
+
+    <header class="p-8 border-b flex justify-between items-center bg-gray-50">
+        <h1 class="text-xl font-black text-blue-900 tracking-tighter uppercase">DATA Forensic Registry</h1>
+        <div class="flex items-center gap-6">
+            <button id="safariUnlock" onclick="activateSafariAudio()"
+                class="p-3 bg-red-600 text-white rounded-full shadow-lg hover:scale-110 transition-all flex items-center justify-center group"
+                title="Activate System Audio">
+                <svg id="speakerIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z">
+                    </path>
+                </svg>
+            </button>
+            <div id="systemMonitor" class="flex items-center gap-3">
+                <span id="statusIndicator" class="w-2 h-2 bg-green-500 rounded-full"></span>
+                <span id="statusText" class="text-[10px] font-black text-slate-500 tracking-widest uppercase">System
+                    Monitoring Active</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-12 space-y-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <section class="border border-slate-200 p-10 space-y-6 bg-white shadow-sm">
+                <h4 class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Register Image DNA</h4>
+                <input id="i_off" type="text" placeholder="Officer ID"
+                    class="w-full border p-4 text-xs font-bold outline-none focus:border-blue-900 uppercase">
+                <input id="i_st" type="text" placeholder="Status Metadata"
+                    class="w-full border p-4 text-xs font-bold outline-none focus:border-blue-900 uppercase">
+                <input id="i_f" type="file" class="text-[10px] block">
+                <button onclick="submitAsset('image')"
+                    class="w-full bg-blue-900 text-white py-4 text-[11px] font-black tracking-widest hover:bg-blue-800 uppercase transition">Generate
+                    DNA</button>
+            </section>
+
+            <section class="border border-slate-200 p-10 space-y-6 bg-white shadow-sm">
+                <h4 class="text-[10px] font-black text-gray-400 tracking-widest uppercase">Register Document DNA</h4>
+                <input id="d_off" type="text" placeholder="Officer ID"
+                    class="w-full border p-4 text-xs font-bold outline-none focus:border-blue-900 uppercase">
+                <input id="d_nm" type="text" placeholder="Document Name"
+                    class="w-full border p-4 text-xs font-bold outline-none focus:border-blue-900 uppercase">
+                <input id="d_f" type="file" class="text-[10px] block">
+                <button onclick="submitAsset('doc')"
+                    class="w-full bg-blue-900 text-white py-4 text-[11px] font-black tracking-widest hover:bg-blue-800 uppercase transition">Generate
+                    DNA</button>
+            </section>
+        </div>
+
+        <div class="border border-slate-200 shadow-sm bg-white">
+            <table class="w-full text-left text-[11px] font-bold uppercase">
+                <thead class="bg-slate-50 border-b border-slate-200 text-slate-400">
+                    <tr>
+                        <th class="px-10 py-5">Officer ID</th>
+                        <th class="px-10 py-5">Asset Type</th>
+                        <th class="px-10 py-5 text-center">DNA Lock</th>
+                        <th class="px-10 py-5 text-right">Verdict Status</th>
+                    </tr>
+                </thead>
+                <tbody id="registryBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        let activeAlerts = {};
+        let tamperedList = {};
+        let soundUnlocked = false;
+        let repairHistory = {};
+        let beepedEvents = new Set();
+        const lockIcon = `<svg class="w-5 h-5 mx-auto text-slate-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>`;
+
+        const alertAudio = document.getElementById('alertSound');
+
+        function activateSafariAudio() {
+            alertAudio.play().then(() => {
+                alertAudio.pause();
+                alertAudio.currentTime = 0;
+                soundUnlocked = true;
+
+                // Change icon style to "Active" (Green)
+                const btn = document.getElementById('safariUnlock');
+                btn.classList.remove('bg-red-600');
+                btn.classList.add('bg-green-600');
+                btn.title = "Audio Monitoring Active";
+            }).catch(() => alert("Click again to authorize forensic audio."));
+        }
+
+        function showToast() {
+            const toast = document.getElementById("successToast");
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+
+        // IMPROVED SUBMIT ASSET WITH FORCE-CLEAR LOGIC
+        async function submitAsset(type) {
+            showLoader("Encrypting Binary Sequences...");
+
+            // Select all your input fields
+            const iOff = document.getElementById('i_off'), iSt = document.getElementById('i_st'), iF = document.getElementById('i_f');
+            const dOff = document.getElementById('d_off'), dNm = document.getElementById('d_nm'), dF = document.getElementById('d_f');
+
+            let fd = new FormData();
+
+            try {
+                if (type === 'image') {
+                    fd.append('officer_id', iOff.value);
+                    fd.append('status', iSt.value);
+                    fd.append('file', iF.files[0]);
+                    await fetch('/upload-image', { method: 'POST', body: fd });
+                } else {
+                    fd.append('officer_id', dOff.value);
+                    fd.append('doc_name', dNm.value);
+                    fd.append('file', dF.files[0]);
+                    await fetch('/upload-doc', { method: 'POST', body: fd });
+                }
+            } catch (error) {
+                console.error("Upload Error:", error);
+            } finally {
+                // THIS IS THE FIX: Wiping the fields immediately
+                if (type === 'image') {
+                    iOff.value = ""; iSt.value = ""; iF.value = "";
+                } else {
+                    dOff.value = ""; dNm.value = ""; dF.value = "";
+                }
+
+                setTimeout(() => {
+                    hideLoader();
+                    loadRegistry();
+                    if (typeof showToast === "function") showToast();
+                }, 1500);
+            }
+        }
+
+        async function loadRegistry() {
+            const res = await fetch('/api/assets'); const data = await res.json();
+            const body = document.getElementById('registryBody');
+            body.innerHTML = data.map(asset => {
+                const alertData = activeAlerts[asset.id];
+                const isT = tamperedList[asset.id];
+
+                let cls = "bg-green-50 text-green-700 border-green-200"; let txt = "Secure"; let stateCode = 'S';
+
+                if (alertData && !isT) {
+                    cls = "bg-red-600 text-white border-red-700 animate-blink"; txt = "Alert"; stateCode = 'A';
+                } else if (isT) {
+                    cls = "bg-amber-100 text-amber-700 border-amber-200"; txt = "Tampered"; stateCode = 'T';
+                }
+
+                return `<tr class="border-b"><td class="px-10 py-6 text-gray-800">${asset.id}</td><td class="px-10 py-6 text-slate-400">${asset.type}</td><td class="px-10 py-6">${lockIcon}</td><td class="px-10 py-6 text-right"><button onclick="viewCard('${asset.id}','${asset.type}','${asset.info}','${asset.timestamp}','${stateCode}')" class="btn-status px-4 py-2 border rounded-sm tracking-widest uppercase font-black transition ${cls}">${txt}</button></td></tr>`;
+            }).join('');
+        }
+
+        function viewCard(id, type, info, ts, state) {
+            const modal = document.getElementById('forensicModal'); const body = document.getElementById('modalBody'); const foot = document.getElementById('modalFooter');
+            modal.style.display = 'flex';
+
+            if (state === 'A') {
+                const a = activeAlerts[id];
+                document.getElementById('modalTitle').innerText = "FORENSIC BREACH";
+                body.innerHTML = `<p>TYPE: ${a.type}</p><p>HACK: Hijacked to "${a.new || 'BINARY TAMPER'}"</p><p>DETECTED: ${a.ts}</p>`;
+                foot.innerHTML = a.type === 'DATABASE'
+                    ? `<button onclick="repairData('${id}')" class="w-full bg-red-700 text-white py-2.5 font-black text-[9px] tracking-widest uppercase">Shadow Repair</button>`
+                    : `<button onclick="markEnc('${id}','${a.ts}')" class="w-full bg-black text-white py-2.5 font-black text-[9px] tracking-widest uppercase">Encountered</button>`;
+            } else if (state === 'T') {
+                document.getElementById('modalTitle').innerText = "FULL RESTORATION";
+                body.innerHTML = `<p class="text-[9px] text-gray-400 mb-1">Verify Metadata:</p><input id="re_id" type="text" value="${id}" class="w-full border p-2 text-[10px] mb-2 outline-none font-bold uppercase"><input id="re_status" type="text" value="${info}" class="w-full border p-2 text-[10px] mb-2 outline-none font-bold uppercase"><p class="text-[9px] text-gray-400 mt-2 mb-1">Upload Forensic Binary:</p><input type="file" id="re_file" class="block w-full text-[9px]">`;
+                foot.innerHTML = `<button onclick="resecureAsset('${id}','${type}')" class="w-full bg-amber-600 text-white py-2.5 font-black text-[9px] tracking-widest uppercase">Final Restoration</button>`;
+            } else {
+                document.getElementById('modalTitle').innerText = "SECURE RECORD";
+                let log = repairHistory[id] ? `<p class="text-red-600 border-t border-dashed pt-3 text-[9px] uppercase font-black">Restored: ${repairHistory[id]}</p>` : "";
+                body.innerHTML = `<p>ID: ${id}</p><p>INFO: ${info}</p><p>TIME: ${ts}</p>${log}`;
+                foot.innerHTML = `<button onclick="closeModal()" class="w-full bg-slate-100 text-slate-500 py-2.5 font-black text-[9px] tracking-widest uppercase">Close</button>`;
+            }
+        }
+
+        async function repairData(id) {
+            closeModal(); showLoader("Recovering data...");
+            await fetch('/api/repair', { method: 'POST', body: new URLSearchParams({ 'officer_id': id }) });
+            repairHistory[id] = activeAlerts[id].ts;
+            delete activeAlerts[id];
+            setTimeout(() => { hideLoader(); loadRegistry(); }, 10000);
+        }
+
+        function markEnc(id, ts) {
+            tamperedList[id] = { ts: ts };
+            delete activeAlerts[id];
+            closeModal();
+            loadRegistry();
+        }
+
+        async function resecureAsset(oldId, type) {
+            const fd = new FormData();
+            fd.append('officer_id', oldId); fd.append('new_id', document.getElementById('re_id').value);
+            fd.append('new_status', document.getElementById('re_status').value); fd.append('type', type);
+            fd.append('file', document.getElementById('re_file').files[0]);
+            if (!fd.get('file')) return alert("Select file.");
+            closeModal(); showLoader("Re-securing DNA...");
+            await fetch('/api/reupload', { method: 'POST', body: fd });
+            delete tamperedList[oldId]; delete activeAlerts[oldId];
+            setTimeout(() => { hideLoader(); loadRegistry(); }, 1500);
+        }
+
+        setInterval(async () => {
+            try {
+                const res = await fetch('/api/audit-check');
+                const data = await res.json();
+
+                if (data.tampered && data.alerts.length > 0) {
+                    let hasNewUnseenHack = false;
+
+                    data.alerts.forEach(alert => {
+                        const alertKey = `${alert.id}-${alert.ts}`;
+
+                        // ONLY BEEP IF:
+                        // 1. We haven't beeped for this specific timestamp yet
+                        // 2. The officer HAS NOT yet acknowledged it (it's not in tamperedList)
+                        if (!beepedEvents.has(alertKey) && !tamperedList[alert.id]) {
+                            hasNewUnseenHack = true;
+                            beepedEvents.add(alertKey);
+
+                            // Clear history if an old "Secure" asset is hit again
+                            if (repairHistory[alert.id]) delete repairHistory[alert.id];
+                        }
+                        activeAlerts[alert.id] = alert;
+                    });
+
+                    // Trigger sound only for the brand new Red Alert
+                    if (hasNewUnseenHack && soundUnlocked) {
+                        alertAudio.currentTime = 0;
+                        alertAudio.play().catch(e => { });
+                    }
+
+                    document.getElementById('statusText').innerText = `${data.alerts.length} BREACHES DETECTED`;
+                    document.getElementById('statusText').classList.add('animate-bounce-red');
+                    document.getElementById('statusIndicator').className = "w-2 h-2 bg-red-600 rounded-full";
+                } else {
+                    activeAlerts = {};
+                    document.getElementById('statusText').innerText = "System Monitoring Active";
+                    document.getElementById('statusText').classList.remove('animate-bounce-red');
+                    document.getElementById('statusIndicator').className = "w-2 h-2 bg-green-500 rounded-full";
+                }
+                loadRegistry();
+            } catch (e) { }
+        }, 3000);
+
+        function showLoader(txt) { document.getElementById('loaderText').innerText = txt; document.getElementById('mainLoader').classList.remove('hidden'); }
+        function hideLoader() { document.getElementById('mainLoader').classList.add('hidden'); }
+        function closeModal() { document.getElementById('forensicModal').style.display = 'none'; }
+        window.onload = loadRegistry;
+    </script>
+</body>
+
+</html>

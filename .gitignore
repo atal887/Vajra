@@ -1,0 +1,33 @@
+node_modules/
+__pycache__/
+*.pyc
+.env
+*.log
+dist/
+build/
+.DS_Store
+vajra-mcd/openresty-1.25.3.1/
+vajra-mcd/openssl-3.0.13/
+vajra-mcd/*.tar.gz
+vajra-mcd/logs/
+vajra-mcd/*_temp/
+vajra-mcd/database/
+# databases
+*.db
+
+# logs & temp
+*.log
+
+# images & docs
+MCD/captured_documents/
+MCD/captured_images/
+
+# binary storage
+cyber_shard_system/backend/storage_server1/storage/
+cyber_shard_system/backend/storage_server2/storage/
+cyber_shard_system/backend/storage_server3/storage/
+
+# compiled binaries
+MCD_defense/backend/mcd_server
+
+MCD_defense/backend/asio/

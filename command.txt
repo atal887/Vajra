@@ -1,0 +1,25 @@
+vajra-mcd
+brew services restart openresty
+php -S localhost:8081
+http://localhost:8081/portal/index.html
+http://localhost:10101/api/v1/search?pid=%27%20OR%201=1%20-- 
+ffuf -u 'http://localhost:8081/portal/vault/view.php?file=../../FUZZ' -w /usr/share/dict/words -mc all
+http://localhost:8081/portal/vault/dossier.php
+
+MCD 
+sqlite3 mcd_records.db
+SELECT dna_hash FROM reports;
+SELECT officer_id, status FROM reports;
+
+python3 verify.py
+captured_images/EMP2345123_1774600752.png
+http://127.0.0.1:8000
+
+MCD_defense
+g++ -std=c++17 main.cpp -o mcd_server -I /opt/homebrew/include -lpthread
+./mcd_server 
+http://127.0.0.1:5500/MCD_defense/index.html
+
+cyber
+runn all four servers
+npm run dev

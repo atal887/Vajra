@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DATA Command - Secure Admin Access</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+    <style>
+        body { margin:0; background:#f8fafc; font-family:'Segoe UI', system-ui, sans-serif; color:#1e293b; height:100vh; display:flex; flex-direction:column; overflow:hidden; }
+        .header { background:#ffffff; padding:15px 40px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; }
+        .main-container { flex-grow:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
+        .card { background:#ffffff; padding:45px; border-radius:12px; box-shadow:0 10px 15px -3px rgba(0, 0, 0, 0.04); width:100%; max-width:650px; text-align:center; border: 1px solid #e2e8f0; }
+        .btn-group { display:flex; gap:15px; justify-content:center; margin-top:30px; }
+        button { padding:14px 28px; border-radius:8px; border:none; font-weight:600; cursor:pointer; transition:0.2s; font-size:13px; text-transform:uppercase; letter-spacing:0.5px; }
+        .btn-normal { background:#2563eb; color:white; }
+        .btn-attack { background:#ef4444; color:white; }
+        .terminal { height:300px; background:#0f172a; border-top:2px solid #334155; display:flex; flex-direction:column; }
+        .term-header { padding:10px 20px; background:#1e293b; font-size:11px; color:#94a3b8; font-family:monospace; text-transform:uppercase; }
+        #logs { flex-grow:1; overflow-y:auto; padding:20px; font-family:'Consolas', monospace; font-size:13px; color:#4ade80; line-height:1.6; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2 style="margin:0; font-weight:700; color:#0f172a; font-size: 18px;">
+            DATA COMMAND <span style="font-size:11px; color:#64748b; margin-left:10px; font-weight:400; border-left:1px solid #e2e8f0; padding-left:10px;">INFRASTRUCTURE ACCESS LVL 01</span>
+        </h2>
+        <div id="status" style="background:#f0fdf4; color:#166534; padding:6px 16px; border-radius:20px; font-size:11px; font-weight:700; border:1px solid #bbf7d0;">SYSTEM_ONLINE</div>
+    </div>
+
+    <div class="main-container">
+        <div class="card">
+            <h3 style="margin:0; color:#0f172a; font-size: 26px; font-weight:800;">Administrative Resource Query</h3>
+            <p style="color:#64748b; font-size:15px; margin-top: 15px; line-height:1.5;">
+                Remote authentication required. Unauthorized high-frequency requests will trigger <b>Hardware-Level Sabotage</b> via Adaptive Resource Exhaustion.
+            </p>
+            <div class="btn-group">
+                <button class="btn-normal" onclick="runSimulation(false)">Validate Official Access</button>
+                <button class="btn-attack" onclick="runSimulation(true)">Simulate Botnet Threat</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="terminal">
+        <div class="term-header">>_ KERNEL_LOG_STREAM [NODE_8085_ACTIVE]</div>
+        <div id="logs"></div>
+    </div>
+
+    <script>
+    const logDiv = document.getElementById("logs");
+
+    function addLog(msg, color = "#4ade80") {
+        const time = new Date().toLocaleTimeString();
+        logDiv.innerHTML += `<div><span style="color:#64748b">[${time}]</span> <span style="color:${color}">${msg}</span></div>`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    // THE NUCLEAR OPTION: This forces 100% total system saturation
+    function triggerHardwareMeltdown() {
+        const duration = 15000; // 15 seconds of guaranteed 100% load
+        const end = Date.now() + duration;
+        
+        while (Date.now() < end) {
+            // Recursive Fibonacci at depth 40 is a black hole for CPU cycles
+            const f = (n) => n <= 1 ? n : f(n - 1) + f(n - 2);
+            f(40); 
+            // Also flooding the FPU with trig math to ensure the silicon stays hot
+            Math.atan2(Math.random(), Math.random()) * Math.exp(Math.random());
+        }
+    }
+
+async function runSimulation(isAttack) {
+    addLog(isAttack ? "CRITICAL: Botnet Signature Detected!" : "Initiating...", isAttack ? "#f87171" : "#4ade80");
+    
+    try {
+        // Step 1: Reach the server. If this fails, no spike happens.
+        const res = await axios.post("http://127.0.0.1:8085/search", { is_bot: isAttack });
+
+        if (isAttack) {
+            document.getElementById("status").innerText = "SABOTAGE_ACTIVE";
+            addLog("HARDWARE LOCK ENGAGED...", "#f87171");
+            // Step 2: TRIGGER THE SPIKE after connection is confirmed
+            setTimeout(() => { triggerHardwareMeltdown(); }, 100);
+        }
+
+        if (res.data.status === "CHALLENGE") {
+            const { seed, difficulty } = res.data;
+            const prefix = "0".repeat(difficulty);
+            let nonce = 0;
+            // Step 3: The SHA-256 CPU Grind
+            while (true) {
+                const hash = CryptoJS.SHA256(seed + nonce).toString();
+                if (hash.startsWith(prefix)) break;
+                nonce++;
+            }
+            await axios.post("http://127.0.0.1:8085/search", { nonce });
+        }
+    } catch (e) { 
+        addLog("NETWORK_ERROR: Browser blocked the handshake.", "#f87171");
+        console.error(e); 
+    }
+}
+
+   
+
+      
+</script>
+</body>
+</html>

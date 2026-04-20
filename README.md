@@ -60,6 +60,9 @@ Startups provide DB URL; Vajra acts as proxy layer, generates secure URL. No dir
 
 ## 3. Architecture
 
+
+![Architecture Diagram](architecture.png)
+**Arrow Diagram**:
 ```
 User Request
      ↓
@@ -75,8 +78,6 @@ Bit-Level Fragmentation
      ↓
 Secure Storage
 ```
-
-![Architecture Diagram](../architecture.png)
 
 ## 4. Features
 

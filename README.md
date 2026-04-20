@@ -1,29 +1,49 @@
 # Vajra: Multi-Layer Cybersecurity Defense System
 
-## Team Members
-
-Nandini Atal  
-Navya Jindal  
-Aryan Bansal  
-Mehak Taneja  
-
 Vajra provides advanced cybersecurity through distributed sharding, intrusion detection, and multi-layer defense.
 
-Python | C++ | React | NGINX
+## Team Members
+
+- Nandini Atal  
+- Navya Jindal  
+- Aryan Bansal  
+- Mehak Taneja  
+
+
+---
+
+### Tech Stack
+
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![C++](https://img.shields.io/badge/C++-blue)
+![React](https://img.shields.io/badge/React-Frontend-blue)
+![NGINX](https://img.shields.io/badge/NGINX-Server-green)
+![Docker](https://img.shields.io/badge/Docker-Containerization-blue)
+![OpenCV](https://img.shields.io/badge/OpenCV-Computer_Vision-green)
+![SQLite](https://img.shields.io/badge/SQLite-Database-lightgrey)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-UI-blue)
+![Gemini API](https://img.shields.io/badge/Gemini-API-orange)
+
+---
 
 ## Important
 
-Demo Video: Embedded-style preview (click to play on YouTube).
+<p align="center"><strong>Demo Video</strong></p>
 
-[Watch the Vajra demo video](https://www.youtube.com/watch?v=PLACEHOLDER)  
-Play Demo on YouTube
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=VIDEO_ID">
+    <img src="https://img.youtube.com/vi/VIDEO_ID/0.jpg" width="700">
+  </a>
+</p>
+
+<p align="center"><strong>Play Demo on YouTube</strong></p>
 
 ## Table of Contents
 1. [Overview](#1-overview)  
 2. [Why This Project Stands Out](#2-why-this-project-stands-out)  
 3. [Architecture](#3-architecture)  
 4. [Features](#4-features)  
-5. [Layer 1: Fake DB Layer](#5-layer-1-fake-db-layer)  
+5. [Layer 1: Fake DB Layer](#layer-1-fake-db-layer) 
 6. [Layer 2: Resource Tarpit](#6-layer-2-resource-tarpit)  
 7. [Layer 3: Chronos Locks](#7-layer-3-chronos-locks)  
 8. [Layer 4: Botnet Math Layer](#8-layer-4-botnet-math-layer)  
@@ -81,28 +101,90 @@ Secure Storage
 
 ## 4. Features
 
-**Plug and Protect**: Proxy mode with secure URL generation.
+- Multi-layered defense architecture protecting against modern cyber threats  
+- Proxy-based secure access with controlled exposure of endpoints  
+- Real-time attack monitoring and logging  
+- Intelligent attacker profiling and fingerprinting  
+- Adaptive response system based on threat level  
+- Distributed storage for enhanced data security  
+- Bot and automation detection using behavioral analysis  
+- Post-quantum cryptographic support for future-proof security  
+- Scalable and containerized deployment using Docker  
+- AI-assisted attack analysis and reporting  
 
-## 5. Layer 1: Fake DB Layer
+**Plug and Protect**:  
+Operates in a proxy mode where all incoming traffic is routed through a secure intermediary. It generates sanitized and controlled URLs, ensuring that backend services are never directly exposed. This helps in preventing direct attacks while enabling safe interaction and monitoring.
 
-Fake database lures hackers with dummy data. Blocks SQL injection (safe queries, web firewall) and XSS attacks (secure web policies, clean code). Hackers hitting real links get fake data maze. Records everything; tool creates realistic fakes. Ends with: Security report on hacker created.
+---
+
+## 5. Layer 1: Fake Database Layer
+
+This layer acts as the first line of deception. Instead of exposing real data, the system presents a highly realistic fake database environment designed to mislead attackers.
+
+- Serves dynamically generated dummy data that mimics real systems  
+- Protects against SQL Injection using parameterized queries and firewall rules  
+- Prevents XSS attacks through strict content sanitization and security policies  
+- Redirects suspicious requests into a controlled “data maze”  
+- Logs attacker queries, payloads, and behavior for analysis  
+- Generates forensic reports based on attacker interaction  
+
+**Outcome**: Attacker is deceived, monitored, and isolated without accessing real data.
+
+---
 
 ## 6. Layer 2: Resource Tarpit
 
-Traps hacker from Layer 1 in slow zone. Gives fake heavy work (endless math, fake encryption) that wastes their computer power and time. Real system stays hidden. Web server scripts adjust how slow based on danger. Fingerprints track hacker across visits. Ends with: Hacker slowed down, resources wasted.
+This layer slows down attackers by trapping them in computationally expensive and time-consuming processes.
+
+- Engages attackers with fake heavy workloads (encryption loops, math problems)  
+- Dynamically adjusts delay intensity based on threat level  
+- Prevents rapid scanning and brute-force attempts  
+- Uses fingerprinting to track repeat attackers across sessions  
+- Ensures minimal impact on legitimate users while isolating malicious traffic  
+
+**Outcome**: Attacker’s time and computational resources are wasted, reducing attack efficiency.
+
+---
 
 ## 7. Layer 3: Chronos Locks
 
-Makes hacker wait longer each time they try (like doubling punishment). Secret chain checks if too fast (3 seconds impossible)—shows error, finds hacker's device/VPN location, makes complete report. Stops fast guessing attacks. Ends with: Full tracker report ready.
+Chronos Locks introduce time-based restrictions to limit repeated malicious attempts.
+
+- Applies exponential delays on repeated requests  
+- Detects abnormal speed patterns (e.g., impossible human response times)  
+- Flags automated tools and scripted attacks  
+- Tracks IP, device fingerprints, and potential VPN/proxy usage  
+- Builds a timeline of attacker activity  
+
+**Outcome**: Prevents brute-force and rapid attacks while generating a detailed attacker profile.
+
+---
 
 ## 8. Layer 4: Botnet Math Layer
 
-Botnet = army of hacked computers attacking together. Gives hard math puzzle to bots, easy one to people. Bots waste time solving hard puzzle instead of attacking (bad business for attackers). Uses special math codes. Ends with: Bot army stopped by puzzle.
+Designed to counter botnet-driven attacks by differentiating between humans and automated systems.
+
+- Presents adaptive computational challenges  
+- Easy problems for humans, complex for bots  
+- Forces bots to spend excessive time solving tasks  
+- Reduces economic viability of large-scale automated attacks  
+- Uses cryptographic and proof-of-work style validation  
+
+**Outcome**: Botnets are slowed down or neutralized by computational overhead.
+
+---
 
 ## 9. Layer 5: Bit-Level Fragmentation
 
-Cuts files into tiny bit pieces, stores each piece on separate server. Even all pieces useless without special PIN master key (unique mix code)—without it, data is meaningless mess ('digital coffee'). Key shown to admin once only; developers don't keep it. Ends with: Data safe, can't be put back together.
+This layer ensures maximum data security by distributing and obfuscating stored information.
 
+- Splits sensitive data into tiny fragments at the bit level  
+- Distributes fragments across multiple storage nodes  
+- Uses a unique master key (PIN-based reconstruction logic)  
+- Prevents reconstruction without full authorization  
+- Ensures even partial data leaks are useless  
+
+**Outcome**: Data remains secure and unrecoverable without the correct reconstruction key.
 ## 10. Project Structure
 
 ```
@@ -198,9 +280,13 @@ g++ main.cpp -o server
 - Simulate hacks: python MCD/simulate_hack.py  
 - Test tarpit: curl tarpit endpoint  
 - Verify fragmentation: Check storage servers  
-- Frontend tests: npm test  
+- Frontend tests: npm test
 
-## 15. Team and Credits
+## 15. Visual Showcase
+
+A glimpse into Vajra's interface and multi-layer defense system in action.
+
+## 16. Team and Credits
 
 **Team Members:**  
 Nandini Atal  
@@ -210,7 +296,7 @@ Mehak Taneja
 
 
 
-## 16. Future Improvements
+## 17. Future Improvements
 
 - LLM behavioral biometrics  
 - AI-driven tarpit adaptation  
@@ -218,4 +304,4 @@ Mehak Taneja
 - Global threat intelligence sharing  
 
 ---
-MIT License
+

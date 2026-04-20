@@ -76,7 +76,7 @@ Bit-Level Fragmentation
 Secure Storage
 ```
 
-![Architecture Diagram](architecture.png)
+![Architecture Diagram](../architecture.png)
 
 ## 4. Features
 
